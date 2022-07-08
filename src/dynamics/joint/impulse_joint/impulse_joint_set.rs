@@ -1,4 +1,4 @@
-use super::ImpulseJoint;
+use super::{ImpulseJoint};
 use crate::geometry::{InteractionGraph, RigidBodyGraphIndex, TemporaryInteractionIndex};
 
 use crate::data::arena::Arena;
@@ -42,7 +42,8 @@ pub struct ImpulseJointSet {
     rb_graph_ids: Coarena<RigidBodyGraphIndex>,
     joint_ids: Arena<TemporaryInteractionIndex>, // Map joint handles to edge ids on the graph.
     joint_graph: InteractionGraph<RigidBodyHandle, ImpulseJoint>,
-    pub(crate) to_wake_up: Vec<RigidBodyHandle>, // A set of rigid-body handles to wake-up during the next timestep.
+    /// A set of rigid-body handles to wake-up during the next timestep.
+    pub(crate) to_wake_up: Vec<RigidBodyHandle>,
 }
 
 impl ImpulseJointSet {
@@ -52,7 +53,7 @@ impl ImpulseJointSet {
             rb_graph_ids: Coarena::new(),
             joint_ids: Arena::new(),
             joint_graph: InteractionGraph::new(),
-            to_wake_up: vec![],
+            to_wake_up: vec![]
         }
     }
 

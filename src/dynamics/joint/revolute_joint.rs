@@ -5,6 +5,8 @@ use crate::math::{Point, Real};
 #[cfg(feature = "dim3")]
 use crate::math::UnitVector;
 
+use super::MotionLink;
+
 #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, PartialEq)]
 #[repr(transparent)]
@@ -53,14 +55,14 @@ impl RevoluteJoint {
 
     /// Is there a motion link between this joint and another?
     pub fn motion_linked(&self) -> bool {
-        self.data.motion_link
+        self.data.motion_linked()
     }
 
     /// Sets whether or not there is a motion link between this joint and another
     /// 
     /// This is overriden if you manually add a motion link
-    pub fn set_motion_link(&mut self, enabled: bool) -> &mut Self {
-        self.data.set_motion_link(enabled);
+    pub fn set_motion_link(&mut self, motion_link: &MotionLink) -> &mut Self {
+        self.data.set_motion_link(motion_link);
         self
     }
 

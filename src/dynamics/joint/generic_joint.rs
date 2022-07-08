@@ -6,6 +6,8 @@ use crate::utils::{WBasis, WReal};
 #[cfg(feature = "dim3")]
 use crate::dynamics::SphericalJoint;
 
+use super::MotionLink;
+
 #[cfg(feature = "dim3")]
 bitflags::bitflags! {
     /// A bit mask identifying multiple degrees of freedom of a joint.
@@ -209,9 +211,7 @@ pub struct GenericJoint {
     /// Are contacts between the attached rigid-bodies enabled?
     pub contacts_enabled: bool,
     /// Is there a connected motion link to this joint ?
-    /// 
-    /// Note this will be set automatically when calling a link operation
-    pub motion_link: bool,
+    motion_link: Option<MotionLink>,
 }
 
 impl Default for GenericJoint {
@@ -226,7 +226,7 @@ impl Default for GenericJoint {
             limits: [JointLimits::default(); SPATIAL_DIM],
             motors: [JointMotor::default(); SPATIAL_DIM],
             contacts_enabled: true,
-            motion_link: false
+            motion_link: None
         }
     }
 }
@@ -344,14 +344,14 @@ impl GenericJoint {
 
     /// Is there a motion link between this joint and another?
     pub fn motion_linked(&self) -> bool {
-        self.motion_link
+        self.motion_link.is_some()
     }
 
     /// Sets whether or not there is a motion link between this joint and another
     /// 
     /// This is overriden if you manually add a motion link
-    pub fn set_motion_link(&mut self, enabled: bool) -> &mut Self {
-        self.motion_link = enabled;
+    pub fn set_motion_link(&mut self, motion_link: &MotionLink) -> &mut Self {
+        self.motion_link = Some(*motion_link);
         self
     }
 
