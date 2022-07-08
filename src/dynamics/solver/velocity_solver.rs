@@ -35,6 +35,7 @@ impl VelocitySolver {
         joint_constraints: &mut [AnyJointVelocityConstraint],
         generic_joint_jacobians: &DVector<Real>,
     ) {
+
         self.mj_lambdas.clear();
         self.mj_lambdas
             .resize(islands.active_island(island_id).len(), DeltaVel::zero());
@@ -58,6 +59,7 @@ impl VelocitySolver {
             } else {
                 let rb = &bodies[*handle];
                 let dvel = &mut self.mj_lambdas[rb.ids.active_set_offset];
+
 
                 // NOTE: `dvel.angular` is actually storing angular velocity delta multiplied
                 //       by the square root of the inertia tensor:
@@ -153,6 +155,7 @@ impl VelocitySolver {
                     .effective_world_inv_inertia_sqrt
                     .transform_vector(dvel.angular);
 
+
                 // Update positions.
                 let mut new_pos = rb.pos;
                 let mut new_vels = rb.vels;
@@ -166,6 +169,9 @@ impl VelocitySolver {
                 );
                 rb.integrated_vels = new_vels;
                 rb.pos = new_pos;
+
+
+                println!("New Pos : {:?}" , new_pos);
             }
         }
 
@@ -217,11 +223,13 @@ impl VelocitySolver {
                     let mj_lambdas = self
                         .generic_mj_lambdas
                         .rows(multibody.solver_id, multibody.ndofs());
+                    
+
                     multibody.velocities += mj_lambdas;
                 }
             } else {
                 let rb = bodies.index_mut_internal(*handle);
-                let dvel = self.mj_lambdas[rb.ids.active_set_offset];
+                let dvel = self.mj_lambdas[rb.ids.active_set_offset]; // this is an index for vel -> now get the links
                 let dangvel = rb
                     .mprops
                     .effective_world_inv_inertia_sqrt
@@ -230,10 +238,33 @@ impl VelocitySolver {
                 rb.vels.linvel += dvel.linear;
                 rb.vels.angvel += dangvel;
                 rb.vels = rb.vels.apply_damping(params.dt, &rb.damping);
+
+
+                // This should be a seperate operation
+                /*
+                for joint in joints_all.to_vec() {
+                    if let Some(linked) = joint.weight.data.motion_link {
+                        if joint.weight.body2 == *handle {
+                            // now body 2 has this joint for sure
+                            // apply body 2 velocities to this joint ?
+                            let changed_bod = bodies.index_mut_internal(linked.body_handle);
+                            changed_bod.vels.linvel += dvel.linear;
+                            changed_bod.vels.angvel += dangvel;
+                            rb.vels = rb.vels.apply_damping(params.dt, &rb.damping);
+                        }
+                    }
+                }
+                */
+
+                // println!("rb.joints : {:?}", rb.);
+
+
+                // println!("Updating delta Angle Velocity : {:?}", self.mj_lambdas.len());
             }
         }
 
         // Write impulses back into the manifold structures.
+        // I am not sure this actually changes anything
         for constraint in &*joint_constraints {
             constraint.writeback_impulses(joints_all); // writes back 2
         }

@@ -1,3 +1,4 @@
+use crate::data::graph::Edge;
 use crate::dynamics::solver::joint_constraint::JointVelocityConstraintBuilder;
 use crate::dynamics::solver::DeltaVel;
 use crate::dynamics::{
@@ -448,6 +449,8 @@ impl<N: WReal, const LANES: usize> JointVelocityGroundConstraint<N, LANES> {
         let delta_impulse = total_impulse - self.impulse;
         self.impulse = total_impulse;
 
+        println!("Total Impulse : {:?}", total_impulse);
+
         let lin_impulse = self.lin_jac * delta_impulse;
         let ang_impulse = self.ang_jac2 * delta_impulse;
 
@@ -476,6 +479,10 @@ impl JointVelocityGroundConstraint<Real, 1> {
         let motor_axes = joint.motor_axes.bits() & !locked_axes;
         let limit_axes = joint.limit_axes.bits() & !locked_axes;
         let coupled_axes = joint.coupled_axes.bits();
+
+        println!("Locked Axes: {:?}", !joint.locked_axes);
+        println!("Motor Axes: {:?}", joint.motor_axes);
+        println!("Coupled Axes: {:?}", joint.coupled_axes);
 
         let builder = JointVelocityConstraintBuilder::new(
             frame1,
@@ -641,7 +648,25 @@ impl JointVelocityGroundConstraint<Real, 1> {
     }
 
     pub fn writeback_impulses(&self, joints_all: &mut [JointGraphEdge]) {
+        // let new_joint = joints_all.to_vec();
+
         let joint = &mut joints_all[self.joint_id[0]].weight;
+
+        /*
+        if let Some(linked) = joint.data.motion_link {
+            // get the linked joints index if it exists in this island - then apply to this
+            // println!("Found Linked joint : {:?}", linked.joint_handle);
+
+            for find_joint in new_joint {
+                if find_joint.weight.handle == linked.joint_handle {
+                    // self.impulse += find_joint.weight.impulses.
+                }
+            }
+            
+            // can we get the joint impulses and motor information from this to apply?
+        }
+        */
+
         match self.writeback_id {
             WritebackId::Dof(i) => joint.impulses[i] = self.impulse,
             WritebackId::Limit(i) => joint.data.limits[i].impulse = self.impulse,

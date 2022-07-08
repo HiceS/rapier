@@ -77,6 +77,7 @@ impl CollisionPipeline {
             );
         }
 
+
         narrow_phase.register_pairs(None, colliders, bodies, &self.broad_phase_events, events);
         narrow_phase.compute_contacts(
             prediction_distance,
@@ -88,6 +89,7 @@ impl CollisionPipeline {
             hooks,
             events,
         );
+
         narrow_phase.compute_intersections(bodies, colliders, modified_colliders, hooks, events);
     }
 

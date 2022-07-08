@@ -19,7 +19,7 @@ fn create_revolute_joints(
     colliders.insert_with_parent(collider, curr_parent, bodies);
 
     for i in 0..num {
-        // Create four bodies.
+        // Create 2 bodies.
         let z = origin.z + i as f32 * shift * 2.0 + shift;
 
         let positions = [
@@ -41,10 +41,10 @@ fn create_revolute_joints(
         let revs = [
             RevoluteJointBuilder::new(z)
                 .local_anchor2(point![0.0, 0.0, -shift])
-                .motor_velocity(-2.0, 1000.0),
+                .motor_velocity(9.0, 1.0),
             RevoluteJointBuilder::new(x)
                 .local_anchor2(point![-shift, 0.0, 0.0])
-                .motor_velocity(-4.0, 1000.0),
+                .motor_velocity(9.0, 1.0),
         ];
 
         if use_articulations {
@@ -57,7 +57,7 @@ fn create_revolute_joints(
             ];
 
             // will take joint revs[1] and motion link revs[0]
-            impulse_joints.get_mut(revs[1]).unwrap().data.set_motion_link(&MotionLink { joint_handle: revs[0], ratio: 0.5, reversed: false });
+            impulse_joints.get_mut(revs[1]).unwrap().data.set_motion_link(&MotionLink { body_handle: handles[1], ratio: 0.5, reversed: false });
         }
 
 

@@ -18,6 +18,7 @@ use crate::math::{Isometry, SimdReal, SIMD_WIDTH};
 #[cfg(feature = "parallel")]
 use crate::dynamics::JointAxesMask;
 
+#[derive(Debug)]
 pub enum AnyJointVelocityConstraint {
     JointConstraint(JointVelocityConstraint<Real, 1>),
     JointGroundConstraint(JointVelocityGroundConstraint<Real, 1>),

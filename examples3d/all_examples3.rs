@@ -138,5 +138,5 @@ pub fn main() {
         .unwrap_or(0);
 
     let testbed = TestbedApp::from_builders(i, builders);
-    testbed.run()
+    testbed.run();
 }
