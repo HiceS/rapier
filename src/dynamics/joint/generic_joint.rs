@@ -208,6 +208,10 @@ pub struct GenericJoint {
     pub motors: [JointMotor; SPATIAL_DIM],
     /// Are contacts between the attached rigid-bodies enabled?
     pub contacts_enabled: bool,
+    /// Is there a connected motion link to this joint ?
+    /// 
+    /// Note this will be set automatically when calling a link operation
+    pub motion_link: bool,
 }
 
 impl Default for GenericJoint {
@@ -222,6 +226,7 @@ impl Default for GenericJoint {
             limits: [JointLimits::default(); SPATIAL_DIM],
             motors: [JointMotor::default(); SPATIAL_DIM],
             contacts_enabled: true,
+            motion_link: false
         }
     }
 }
@@ -334,6 +339,19 @@ impl GenericJoint {
     /// Sets whether contacts between the attached rigid-bodies are enabled.
     pub fn set_contacts_enabled(&mut self, enabled: bool) -> &mut Self {
         self.contacts_enabled = enabled;
+        self
+    }
+
+    /// Is there a motion link between this joint and another?
+    pub fn motion_linked(&self) -> bool {
+        self.motion_link
+    }
+
+    /// Sets whether or not there is a motion link between this joint and another
+    /// 
+    /// This is overriden if you manually add a motion link
+    pub fn set_motion_link(&mut self, enabled: bool) -> &mut Self {
+        self.motion_link = enabled;
         self
     }
 
@@ -517,6 +535,11 @@ impl GenericJointBuilder {
     #[must_use]
     pub fn contacts_enabled(mut self, enabled: bool) -> Self {
         self.0.contacts_enabled = enabled;
+        self
+    }
+
+    /// Sets a new motion link for a given joint
+    pub fn link_motion(mut self, joint: GenericJoint) -> Self {
         self
     }
 

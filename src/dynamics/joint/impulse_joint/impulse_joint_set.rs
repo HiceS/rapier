@@ -104,6 +104,19 @@ impl ImpulseJointSet {
             .map(|inter| (inter.0, inter.1, inter.2.handle, inter.2))
     }
 
+    /*
+    pub fn linked_joints<'a>(
+        &'a self,
+        joint: ImpulseJointHandle,
+    ) -> impl Iterator<Item = (ImpulseJointHandle, &'a ImpulseJoint)> {
+        // Need to get the motion linked joints for a given joint
+        // For a given joint find the information I suppose idk im tired
+        // return a series of impulse joints that are linked
+
+
+    }
+    */
+
     /// Is the given joint handle valid?
     pub fn contains(&self, handle: ImpulseJointHandle) -> bool {
         self.joint_ids.contains(handle.0)

@@ -235,7 +235,7 @@ impl VelocitySolver {
 
         // Write impulses back into the manifold structures.
         for constraint in &*joint_constraints {
-            constraint.writeback_impulses(joints_all);
+            constraint.writeback_impulses(joints_all); // writes back 2
         }
 
         for constraint in &*contact_constraints {

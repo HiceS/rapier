@@ -50,6 +50,20 @@ impl RevoluteJoint {
         self
     }
 
+
+    /// Is there a motion link between this joint and another?
+    pub fn motion_linked(&self) -> bool {
+        self.data.motion_link
+    }
+
+    /// Sets whether or not there is a motion link between this joint and another
+    /// 
+    /// This is overriden if you manually add a motion link
+    pub fn set_motion_link(&mut self, enabled: bool) -> &mut Self {
+        self.data.set_motion_link(enabled);
+        self
+    }
+
     /// The joint’s anchor, expressed in the local-space of the first rigid-body.
     #[must_use]
     pub fn local_anchor1(&self) -> Point<Real> {

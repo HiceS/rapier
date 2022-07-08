@@ -814,12 +814,17 @@ impl NarrowPhase {
                 if let Some(co_parent2) = &co2.parent {
                     rb_type2 = bodies[co_parent2.handle].body_type;
                 }
+                
+                // TODO: add a check to get motion link for second joint on a given joint if it exists in narrowphase contact
+
 
                 // Deal with contacts disabled between bodies attached by joints.
                 if let (Some(co_parent1), Some(co_parent2)) = (&co1.parent, &co2.parent) {
                     for (_, joint) in
                         impulse_joints.joints_between(co_parent1.handle, co_parent2.handle)
                     {
+                        // check here to see if joint.motionlink has a parent - or add it to the pipeline for links
+                        // also maybe add a new type of event or something ?
                         if !joint.data.contacts_enabled {
                             pair.clear();
                             break 'emit_events;
