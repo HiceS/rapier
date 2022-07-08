@@ -211,7 +211,7 @@ pub struct GenericJoint {
     /// Are contacts between the attached rigid-bodies enabled?
     pub contacts_enabled: bool,
     /// Is there a connected motion link to this joint ?
-    motion_link: Option<MotionLink>,
+    pub motion_link: Option<MotionLink>,
 }
 
 impl Default for GenericJoint {
@@ -535,11 +535,6 @@ impl GenericJointBuilder {
     #[must_use]
     pub fn contacts_enabled(mut self, enabled: bool) -> Self {
         self.0.contacts_enabled = enabled;
-        self
-    }
-
-    /// Sets a new motion link for a given joint
-    pub fn link_motion(mut self, joint: GenericJoint) -> Self {
         self
     }
 

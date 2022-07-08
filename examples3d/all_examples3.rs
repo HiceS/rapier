@@ -41,6 +41,7 @@ mod primitives3;
 mod restitution3;
 mod sensor3;
 mod trimesh3;
+mod motion_link;
 
 fn demo_name_from_command_line() -> Option<String> {
     let mut args = std::env::args();
@@ -91,6 +92,7 @@ pub fn main() {
         ("Domino", domino3::init_world),
         ("Heightfield", heightfield3::init_world),
         ("Impulse Joints", joints3::init_world_with_joints),
+        ("A_Motion Linked Joints", motion_link::init_world),
         ("Locked rotations", locked_rotations3::init_world),
         ("One-way platforms", one_way_platforms3::init_world),
         ("Platform", platform3::init_world),
