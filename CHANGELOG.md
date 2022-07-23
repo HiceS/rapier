@@ -1,4 +1,4 @@
-## Unreleased
+## v0.14.0 (09 July 2022)
 ### Fixed
 - Fix unpredictable broad-phase panic when using small colliders in the simulation.
 - Fix collision events being incorrectly generated for any shape that produces multiple
@@ -13,6 +13,10 @@
 - Remove the methods `RigidBodyBuilder::additional_principal_angular_inertia`. Use
   `RigidBodyBuilder::additional_mass_properties` instead.
 - The `Collider::density` method now always returns a `Real` (instead of an `Option<Real>`).
+- Rename `RigidBody::restrict_rotations` and `RigidBody::restrict_translations` to
+  `RigidBody::set_enabled_rotations` and `RigidBody::set_enabled_translations`.
+- Rename `RigidBodyBuilder::restrict_rotations` and `RigidBodyBuilder::restrict_translations` to
+  `RigidBodyBuilder::enabled_rotations` and `RigidBodyBuilder::enabled_translations`.
 
 ### Added
 - Add `RigidBody::recompute_mass_properties_from_colliders` to force the immediate computation
