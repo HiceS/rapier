@@ -109,6 +109,12 @@ impl From<JointAxis> for JointAxesMask {
     }
 }
 
+impl From<JointAxesMask> for JointAxis {
+    fn from(mask: JointAxesMask) -> Self {
+        return num::FromPrimitive::from_u32(mask.bits().trailing_zeros()).unwrap();
+    }
+}
+
 /// The limits of a joint along one of its degrees of freedom.
 #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[derive(Copy, Clone, Debug, PartialEq)]
