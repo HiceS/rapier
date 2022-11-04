@@ -1,3 +1,5 @@
+use num_derive::FromPrimitive;
+
 use crate::dynamics::solver::MotorParameters;
 use crate::dynamics::{FixedJoint, MotorModel, PrismaticJoint, RevoluteJoint};
 use crate::math::{Isometry, Point, Real, Rotation, UnitVector, Vector, SPATIAL_DIM};
@@ -84,7 +86,7 @@ impl Default for JointAxesMask {
 
 /// Identifiers of degrees of freedoms of a joint.
 #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
-#[derive(Copy, Clone, Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq, FromPrimitive)]
 pub enum JointAxis {
     /// The translational degree of freedom along the joint’s local X axis.
     X = 0,
