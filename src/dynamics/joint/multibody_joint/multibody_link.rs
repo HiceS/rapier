@@ -62,6 +62,11 @@ impl MultibodyLink {
         &self.joint
     }
 
+    /// Mutable Reference to MultibodyJoint of this link
+    pub fn joint_mut(&mut self) -> &mut MultibodyJoint {
+        &mut self.joint
+    }
+
     /// The handle of the rigid-body of this link.
     pub fn rigid_body_handle(&self) -> RigidBodyHandle {
         self.rigid_body
